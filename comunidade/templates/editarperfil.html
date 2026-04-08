@@ -1,0 +1,72 @@
+{%extends 'perfil.html'%}
+
+{% block form_editar_perfil %}
+<div class="container">
+    <hr>
+    <div class="row">
+        {# O ENCTYPE ABAIXO PERMITE O ENVIO DE ARQUIVOS BINARIOS PARA O FLASK #}
+        <!-- O atributo enctype="multipart/form-data" é necessário para permitir o envio de arquivos (como imagens) pelo formulário -->
+        <!-- enctype="multipart/form-data": define que o formulário pode enviar arquivos binários (ex: upload de foto de perfil) -->
+        <form method="POST" action="" class="border p-4 mt-2" enctype="multipart/form-data">
+            {{ form_editar_perfil.csrf_token() }}
+            <legend>Editar Perfil</legend>
+            <fieldset>
+                <div class="form-group">
+                    {{ form_editar_perfil.username.label(class='form-control-label') }}
+                    {% if form_editar_perfil.username.errors %}
+                        {{ form_editar_perfil.username(class='form-control is-invalid') }}
+                        <div class="invalid-feedback">
+                            {% for error in form_editar_perfil.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_editar_perfil.username(class='form-control') }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_editar_perfil.email.label(class='form-control-label') }}
+                    {% if form_editar_perfil.email.errors %}
+                        {{ form_editar_perfil.email(class='form-control is-invalid') }}
+                        <div class="invalid-feedback">
+                            {% for error in form_editar_perfil.email.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form_editar_perfil.email(class='form-control') }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form_editar_perfil.foto_perfil.label }}
+                    {{ form_editar_perfil.foto_perfil(class='form-control-file') }}
+                    {% if form_editar_perfil.foto_perfil.errors %}
+                        {% for error in form_editar_perfil.foto_perfil.errors %}
+                            <span class="text-danger">{{ error }}</span>
+                            <br>
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+                <hr>
+                <p>Cursos</p>
+                {% for campo in form_editar_perfil %}
+                    {% if 'curso_' in campo.name %}
+                        <div class="form-group">
+                            {# Verifica se o texto do label está dentro da string de cursos do usuário #}
+                            {% if campo.label.text in current_user.cursos %}
+                                {{ campo(class='form-check-input', checked=True) }}
+                            {% else %}
+                                {{ campo(class='form-check-input') }}
+                            {% endif %}
+
+                            {{ campo.label(class='form-control-label') }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+            {{form_editar_perfil.botao_submit_editarperfil(class='btn btn-primary mt-2') }}
+        </form>
+    </div>
+</div>
+{% endblock %}
