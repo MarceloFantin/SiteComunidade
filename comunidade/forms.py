@@ -45,6 +45,8 @@ class FormEditarPerfil(FlaskForm):
     curso_sql = BooleanField("SQL")
 
 
+
+
     botao_submit_editarperfil = SubmitField("Confimar Edição")
 
     def validate_email(self, email):
