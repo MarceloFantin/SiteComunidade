@@ -1,6 +1,6 @@
 from comunidade import app
 
-  
+#teste  
     
 if __name__ == '__main__':
     #quando for colocar no ar tem que tirar o debug=true
